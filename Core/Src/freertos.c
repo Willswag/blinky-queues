@@ -214,11 +214,16 @@ void StartBlinker1(void *argument)
 {
   /* USER CODE BEGIN StartBlinker1 */
 	uint16_t blink_rate = 1000;
+	uint16_t blinks = 0;
 	/* Infinite loop */
 	for(;;)
 	{
 		osMessageQueueGet(CommandsToBlinkHandle,&blink_rate , NULL, 0);
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+		blinks++;
+		if (blinks%100 == 0) {
+			osMessageQueuePut(times_blinkedHandle, blinks , NULL, 0);
+		}
 		osDelay(blink_rate);
 	}
   /* USER CODE END StartBlinker1 */
