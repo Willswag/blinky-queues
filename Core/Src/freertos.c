@@ -175,6 +175,7 @@ void StartCommandLine(void *argument)
 	uint8_t local_pointer = 0;
 	char* delay_ptr = NULL;
 	uint16_t delay_len = 0;
+	uint16_t total_blinks = 0;
 	/* Infinite loop */
 	for(;;)
 	{
@@ -196,6 +197,14 @@ void StartCommandLine(void *argument)
 					local_pointer = 0;
 				}
 			}
+		}
+		if (osMessageQueueGet(times_blinkedHandle, &total_blinks, NULL , 0)) {
+			char tx_buffer[50];
+			uint8_t tx_len =0;
+			tx_len  = sprintf(tx_buffer,"total blinks: %d\n",total_blinks);
+			HAL_UART_Transmit(&huart3, (uint8_t)tx_buffer,tx_len , 100);
+			free(tx_buffer);
+			free(tx_len);
 		}
 		osDelay(10);
 	}
