@@ -17,9 +17,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   6 .data         00000078  24000000  08008798  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .bss          00004ba4  24000078  08008810  00020078  2**2
+  7 .bss          00004bac  24000078  08008810  00020078  2**2
                   ALLOC
-  8 ._user_heap_stack 00000604  24004c1c  08008810  00024c1c  2**0
+  8 ._user_heap_stack 00000604  24004c24  08008810  00024c24  2**0
                   ALLOC
   9 .ARM.attributes 0000002e  00000000  00000000  00020078  2**0
                   CONTENTS, READONLY
@@ -431,9 +431,9 @@ void MX_FREERTOS_Init(void) {
  800064c:	bf00      	nop
  800064e:	bd80      	pop	{r7, pc}
  8000650:	080086c0 	.word	0x080086c0
- 8000654:	24004ae8 	.word	0x24004ae8
+ 8000654:	24004af0 	.word	0x24004af0
  8000658:	080086d8 	.word	0x080086d8
- 800065c:	24004aec 	.word	0x24004aec
+ 800065c:	24004af4 	.word	0x24004af4
  8000660:	08008630 	.word	0x08008630
  8000664:	08000691 	.word	0x08000691
  8000668:	24004ad8 	.word	0x24004ad8
@@ -442,10 +442,10 @@ void MX_FREERTOS_Init(void) {
  8000674:	24004ad4 	.word	0x24004ad4
  8000678:	08008678 	.word	0x08008678
  800067c:	08000735 	.word	0x08000735
- 8000680:	24004ae0 	.word	0x24004ae0
+ 8000680:	24004ae8 	.word	0x24004ae8
  8000684:	0800869c 	.word	0x0800869c
  8000688:	08000745 	.word	0x08000745
- 800068c:	24004ae4 	.word	0x24004ae4
+ 800068c:	24004aec 	.word	0x24004aec
 
 08000690 <StartCommandLine>:
   * @param  argument: Not used
@@ -539,7 +539,7 @@ void StartCommandLine(void *argument)
   {
  800070e:	e7c5      	b.n	800069c <StartCommandLine+0xc>
  8000710:	24004adc 	.word	0x24004adc
- 8000714:	24004b3c 	.word	0x24004b3c
+ 8000714:	24004b44 	.word	0x24004b44
  8000718:	24004a6c 	.word	0x24004a6c
  800071c:	24000094 	.word	0x24000094
  8000720:	24004ad0 	.word	0x24004ad0
@@ -1355,7 +1355,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  8000bbc:	24000008 	.word	0x24000008
  8000bc0:	58024400 	.word	0x58024400
  8000bc4:	431bde83 	.word	0x431bde83
- 8000bc8:	24004af0 	.word	0x24004af0
+ 8000bc8:	24004af8 	.word	0x24004af8
  8000bcc:	40001400 	.word	0x40001400
 
 08000bd0 <NMI_Handler>:
@@ -1476,7 +1476,7 @@ void TIM7_IRQHandler(void)
  8000c06:	bf00      	nop
  8000c08:	bd80      	pop	{r7, pc}
  8000c0a:	bf00      	nop
- 8000c0c:	24004af0 	.word	0x24004af0
+ 8000c0c:	24004af8 	.word	0x24004af8
 
 08000c10 <SystemInit>:
   *         configuration.
@@ -1774,7 +1774,7 @@ void MX_USART3_UART_Init(void)
 }
  8000d8c:	bf00      	nop
  8000d8e:	bd80      	pop	{r7, pc}
- 8000d90:	24004b3c 	.word	0x24004b3c
+ 8000d90:	24004b44 	.word	0x24004b44
  8000d94:	40004800 	.word	0x40004800
 
 08000d98 <HAL_UART_MspInit>:
@@ -2002,7 +2002,7 @@ LoopFillZerobss:
   ldr r2, =_sbss
  8000ebc:	24000078 	.word	0x24000078
   ldr r4, =_ebss
- 8000ec0:	24004c1c 	.word	0x24004c1c
+ 8000ec0:	24004c24 	.word	0x24004c24
 
 08000ec4 <ADC_IRQHandler>:
  * @retval None       
@@ -2131,7 +2131,7 @@ __weak void HAL_IncTick(void)
  8000f5c:	4770      	bx	lr
  8000f5e:	bf00      	nop
  8000f60:	2400000c 	.word	0x2400000c
- 8000f64:	24004bcc 	.word	0x24004bcc
+ 8000f64:	24004bd4 	.word	0x24004bd4
 
 08000f68 <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other
@@ -2151,7 +2151,7 @@ __weak uint32_t HAL_GetTick(void)
  8000f74:	f85d 7b04 	ldr.w	r7, [sp], #4
  8000f78:	4770      	bx	lr
  8000f7a:	bf00      	nop
- 8000f7c:	24004bcc 	.word	0x24004bcc
+ 8000f7c:	24004bd4 	.word	0x24004bd4
 
 08000f80 <__NVIC_SetPriorityGrouping>:
            In case of a conflict between priority grouping and available
@@ -16289,7 +16289,7 @@ BaseType_t xReturn;
  80065e0:	f85d 7b04 	ldr.w	r7, [sp], #4
  80065e4:	4770      	bx	lr
  80065e6:	bf00      	nop
- 80065e8:	24004bd0 	.word	0x24004bd0
+ 80065e8:	24004bd8 	.word	0x24004bd8
 
 080065ec <vQueueWaitForMessageRestricted>:
 /*-----------------------------------------------------------*/
@@ -21949,13 +21949,13 @@ uint8_t *puc;
  80084f8:	4801      	ldr	r0, [pc, #4]	; (8008500 <__malloc_lock+0x8>)
  80084fa:	f7ff bf7b 	b.w	80083f4 <__retarget_lock_acquire_recursive>
  80084fe:	bf00      	nop
- 8008500:	24004c14 	.word	0x24004c14
+ 8008500:	24004c1c 	.word	0x24004c1c
 
 08008504 <__malloc_unlock>:
  8008504:	4801      	ldr	r0, [pc, #4]	; (800850c <__malloc_unlock+0x8>)
  8008506:	f7ff bf76 	b.w	80083f6 <__retarget_lock_release_recursive>
  800850a:	bf00      	nop
- 800850c:	24004c14 	.word	0x24004c14
+ 800850c:	24004c1c 	.word	0x24004c1c
 
 08008510 <_free_r>:
  8008510:	b537      	push	{r0, r1, r2, r4, r5, lr}

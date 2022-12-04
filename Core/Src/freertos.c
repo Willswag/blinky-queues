@@ -47,7 +47,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-uint8_t rx_buffer[2];
+uint8_t rx_buffer[10];
 uint8_t new_message_flag = 0;
 uint8_t message_length;
 extern UART_HandleTypeDef huart3;
@@ -179,10 +179,7 @@ void StartCommandLine(void *argument)
 		  HAL_UART_Transmit(&huart3, rx_buffer, 1, 100);
 		 local_buffer[local_pointer] = rx_buffer[0];
 		 if(local_buffer[local_pointer] == '\n' || local_buffer[local_pointer] == '\r'){
-			 new_message_flag = 1;
-			 local_buffer[local_pointer+1 ] = '\n';
-			 message_length = local_pointer;
-			 local_pointer = 0;
+
 		 }else{
 			 local_pointer++;
 			 if(local_pointer > RX_BUFFER_LENGTH){
@@ -190,7 +187,7 @@ void StartCommandLine(void *argument)
 			 }
 		 }
 	 }
-    osDelay(100);
+    osDelay(10);
   }
   osThreadDetach(CommandLineHandle);
   /* USER CODE END StartCommandLine */
