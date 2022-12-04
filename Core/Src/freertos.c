@@ -176,6 +176,7 @@ void StartCommandLine(void *argument)
   {
 	 HAL_StatusTypeDef ret = HAL_UART_Receive(&huart3,rx_buffer ,1, 100);
 	 if(ret == HAL_OK){
+		  HAL_UART_Transmit(&huart3, rx_buffer, 1, 100);
 		 local_buffer[local_pointer] = rx_buffer[0];
 		 if(local_buffer[local_pointer] == '\n' || local_buffer[local_pointer] == '\r'){
 			 new_message_flag = 1;
@@ -191,7 +192,7 @@ void StartCommandLine(void *argument)
 	 }
     osDelay(100);
   }
-  osThreadDetach(ListenerHandle);
+  osThreadDetach(CommandLineHandle);
   /* USER CODE END StartCommandLine */
 }
 
