@@ -198,13 +198,11 @@ void StartCommandLine(void *argument)
 				}
 			}
 		}
-		if (osMessageQueueGet(times_blinkedHandle, &total_blinks, NULL , 0)) {
+		if (osOK == osMessageQueueGet(times_blinkedHandle, &total_blinks, NULL , 0)) {
 			char tx_buffer[50];
 			uint8_t tx_len =0;
-			tx_len  = sprintf(tx_buffer,"total blinks: %d\n",total_blinks);
-			HAL_UART_Transmit(&huart3, (uint8_t)tx_buffer,tx_len , 100);
-			free(tx_buffer);
-			free(tx_len);
+			tx_len  = sprintf(tx_buffer,"total blinks: %d\n\r",total_blinks);
+			HAL_UART_Transmit(&huart3, (uint8_t*)tx_buffer,tx_len , 100);
 		}
 		osDelay(10);
 	}
@@ -231,7 +229,7 @@ void StartBlinker1(void *argument)
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 		blinks++;
 		if (blinks%100 == 0) {
-			osMessageQueuePut(times_blinkedHandle, blinks , NULL, 0);
+			osMessageQueuePut(times_blinkedHandle, &blinks , NULL, 0);
 		}
 		osDelay(blink_rate);
 	}
