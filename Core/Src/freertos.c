@@ -248,6 +248,7 @@ void StartBlinker1(void *argument)
   /* USER CODE BEGIN StartBlinker1 */
 	uint16_t blink_rate = 1000;
 	uint16_t blinks = 0;
+	Command next_move;
 	/* Infinite loop */
 	for(;;)
 	{
