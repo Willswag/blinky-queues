@@ -1,5 +1,5 @@
 freertos.c:123:6:MX_FREERTOS_Init	8	static
 freertos.c:184:6:StartCommandLine	48	static
-freertos.c:238:6:StartBlinker1	24	static
-freertos.c:265:6:StartBlinker2	16	static
-freertos.c:283:6:StartBlinker3	16	static
+freertos.c:246:6:StartBlinker1	40	static
+freertos.c:281:6:StartBlinker2	16	static
+freertos.c:299:6:StartBlinker3	16	static

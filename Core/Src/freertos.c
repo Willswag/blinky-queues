@@ -256,7 +256,7 @@ void StartBlinker1(void *argument)
 	{
 
 		status = osMessageQueueGet(CommandsToBlinkHandle,&next_move , NULL, 0);
-		if(status ==osOK)
+		if(status == osOK)
 		{
 			//process data
 		}
