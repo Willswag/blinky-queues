@@ -49,7 +49,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-char rx_buffer[10];
+char rx_buffer[RX_BUFFER_LENGTH];
 uint8_t new_message_flag = 0;
 uint8_t message_length;
 extern UART_HandleTypeDef huart3;
@@ -93,6 +93,11 @@ osMessageQueueId_t times_blinkedHandle;
 const osMessageQueueAttr_t times_blinked_attributes = {
   .name = "times_blinked"
 };
+/* Definitions for rawCommands */
+osMessageQueueId_t rawCommandsHandle;
+const osMessageQueueAttr_t rawCommands_attributes = {
+  .name = "rawCommands"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -135,6 +140,9 @@ void MX_FREERTOS_Init(void) {
   /* creation of times_blinked */
   times_blinkedHandle = osMessageQueueNew (16, sizeof(uint16_t), &times_blinked_attributes);
 
+  /* creation of rawCommands */
+  rawCommandsHandle = osMessageQueueNew (16, sizeof(char), &rawCommands_attributes);
+
   /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -172,37 +180,29 @@ void MX_FREERTOS_Init(void) {
 void StartCommandLine(void *argument)
 {
   /* USER CODE BEGIN StartCommandLine */
-	uint8_t local_pointer = 0;
+	uint8_t local_index = 0;
 	char* delay_ptr = NULL;
 	uint16_t delay_len = 0;
 	uint16_t total_blinks = 0;
+	osStatus_t status;
+	char new_char;
 	/* Infinite loop */
 	for(;;)
 	{
-		HAL_StatusTypeDef ret = HAL_UART_Receive(&huart3,(uint8_t*)rx_buffer ,1, 100);
-		if(ret == HAL_OK){
-			HAL_UART_Transmit(&huart3, (uint8_t*)rx_buffer, 1, 100);
-			local_buffer[local_pointer] = rx_buffer[0];
-			if(local_buffer[local_pointer] == '\n' || local_buffer[local_pointer] == '\r'){
-				delay_ptr = strstr(local_buffer, DELAY_TRIGGER_WORD);
-				if (delay_ptr != NULL) {
-					delay_len = atoi(delay_ptr + 5);
-					osMessageQueuePut(CommandsToBlinkHandle, &delay_len, 0, 0);
-					memset(local_buffer,0,RX_BUFFER_LENGTH);
-					local_pointer = 0;
-				}
-			}else{
-				local_pointer++;
-				if(local_pointer > RX_BUFFER_LENGTH){
-					local_pointer = 0;
-				}
+		status = osMessageQueueGet(rawCommandsHandle, &new_char, NULL, 0);
+		if(status == osOK)
+		{
+			rx_buffer[local_index] = new_char;
+			local_index++;
+			if(local_index == RX_BUFFER_LENGTH )
+			{
+				local_index = 0;
 			}
-		}
-		if (osOK == osMessageQueueGet(times_blinkedHandle, &total_blinks, NULL , 0)) {
-			char tx_buffer[50];
-			uint8_t tx_len =0;
-			tx_len  = sprintf(tx_buffer,"total blinks: %d\n\r",total_blinks);
-			HAL_UART_Transmit(&huart3, (uint8_t*)tx_buffer,tx_len , 100);
+
+			if(new_char == '\n' || new_char == '\r')
+			{
+				memset(rx_buffer,0,RX_BUFFER_LENGTH);
+			}
 		}
 		osDelay(10);
 	}
@@ -225,6 +225,7 @@ void StartBlinker1(void *argument)
 	/* Infinite loop */
 	for(;;)
 	{
+
 		osMessageQueueGet(CommandsToBlinkHandle,&blink_rate , NULL, 0);
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 		blinks++;

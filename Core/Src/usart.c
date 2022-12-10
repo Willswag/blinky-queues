@@ -21,6 +21,11 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "cmsis_os.h"
+extern uint8_t UART3_rxBuffer[12];
+extern osMessageQueueId_t rawCommandsHandle;
 
 /* USER CODE END 0 */
 
@@ -105,6 +110,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+    /* USART3 interrupt Init */
+    HAL_NVIC_SetPriority(USART3_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(USART3_IRQn);
   /* USER CODE BEGIN USART3_MspInit 1 */
 
   /* USER CODE END USART3_MspInit 1 */
@@ -128,6 +136,8 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     */
     HAL_GPIO_DeInit(GPIOD, STLINK_RX_Pin|STLINK_TX_Pin);
 
+    /* USART3 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(USART3_IRQn);
   /* USER CODE BEGIN USART3_MspDeInit 1 */
 
   /* USER CODE END USART3_MspDeInit 1 */
@@ -136,6 +146,12 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
 /* USER CODE BEGIN 1 */
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    HAL_UART_Transmit(&huart3, UART3_rxBuffer, 1, 100);
+    osMessageQueuePut(rawCommandsHandle, UART3_rxBuffer ,NULL , 0);
+    HAL_UART_Receive_IT(&huart3, UART3_rxBuffer, 1);
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
