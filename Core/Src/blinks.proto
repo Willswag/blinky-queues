@@ -1,0 +1,5 @@
+message Blinks{
+	required int8 led = 1;
+	required int16 brightness = 1;
+	required int32 delay_ms = 1;
+}
