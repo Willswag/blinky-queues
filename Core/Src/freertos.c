@@ -139,7 +139,7 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the queue(s) */
   /* creation of CommandsToBlink */
-  CommandsToBlinkHandle = osMessageQueueNew (16, sizeof(uint16_t), &CommandsToBlink_attributes);
+  CommandsToBlinkHandle = osMessageQueueNew (16, sizeof(Command), &CommandsToBlink_attributes);
 
   /* creation of times_blinked */
   times_blinkedHandle = osMessageQueueNew (16, sizeof(uint16_t), &times_blinked_attributes);
