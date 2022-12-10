@@ -249,11 +249,18 @@ void StartBlinker1(void *argument)
 	uint16_t blink_rate = 1000;
 	uint16_t blinks = 0;
 	Command next_move;
+	osStatus status;
+	const led_number = 0;
 	/* Infinite loop */
 	for(;;)
 	{
 
-		osMessageQueueGet(CommandsToBlinkHandle,&blink_rate , NULL, 0);
+		status = osMessageQueueGet(CommandsToBlinkHandle,&next_move , NULL, 0);
+		if(status ==osOK)
+		{
+			//process data
+		}
+
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 		blinks++;
 		if (blinks%100 == 0) {
