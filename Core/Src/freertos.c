@@ -33,7 +33,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+typedef struct command{
+	uint8_t led;
+	uint8_t brightness;
+	uint32_t delay_ms;
+}Command;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -186,6 +190,7 @@ void StartCommandLine(void *argument)
 	uint16_t total_blinks = 0;
 	osStatus_t status;
 	char new_char;
+	Command loc_com;
 	/* Infinite loop */
 	for(;;)
 	{
@@ -201,6 +206,27 @@ void StartCommandLine(void *argument)
 
 			if(new_char == '\n' || new_char == '\r')
 			{
+				char* buff_ptr = rx_buffer;
+				while(*buff_ptr != '\r'){
+					switch (*buff_ptr) {
+						case 'l':
+							buff_ptr++;
+							loc_com.led = atoi(buff_ptr);
+							break;
+						case 'b':
+							buff_ptr++;
+							loc_com.brightness = atoi(buff_ptr);
+							break;
+						case 'd':
+							buff_ptr++;
+							loc_com.delay_ms = atoi(buff_ptr);
+							break;
+						default:
+							break;
+					}
+					buff_ptr++;
+				}
+				local_index = 0;
 				memset(rx_buffer,0,RX_BUFFER_LENGTH);
 			}
 		}
