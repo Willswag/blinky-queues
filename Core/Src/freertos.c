@@ -198,7 +198,13 @@ void StartCommandLine(void *argument)
 			{
 				local_index = 0;
 			}
+
+			if(new_char == '\n' || new_char == '\r')
+			{
+				memset(rx_buffer,0,RX_BUFFER_LENGTH);
+			}
 		}
+		osDelay(10);
 	}
 	osThreadDetach(CommandLineHandle);
   /* USER CODE END StartCommandLine */
