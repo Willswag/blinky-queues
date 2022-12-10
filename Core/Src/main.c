@@ -47,6 +47,7 @@
 
 /* USER CODE BEGIN PV */
 uint8_t UART3_rxBuffer[12] = {0};
+extern osMessageQueueId_t rawCommandsHandle;
 
 /* USER CODE END PV */
 

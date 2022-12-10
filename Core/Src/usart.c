@@ -21,7 +21,12 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "cmsis_os.h"
 extern uint8_t UART3_rxBuffer[12];
+extern osMessageQueueId_t rawCommandsHandle;
+
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart3;
@@ -144,6 +149,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     HAL_UART_Transmit(&huart3, UART3_rxBuffer, 1, 100);
+    osMessageQueuePut(rawCommandsHandle, UART3_rxBuffer ,NULL , 0);
     HAL_UART_Receive_IT(&huart3, UART3_rxBuffer, 1);
 }
 /* USER CODE END 1 */
