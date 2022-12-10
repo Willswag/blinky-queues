@@ -46,6 +46,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t UART3_rxBuffer[12] = {0};
 
 /* USER CODE END PV */
 
@@ -92,6 +93,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_HS_USB_Init();
   /* USER CODE BEGIN 2 */
+  HAL_UART_Receive_IT (&huart3, UART3_rxBuffer, 1);
 
   /* USER CODE END 2 */
 

@@ -202,7 +202,7 @@ void StartCommandLine(void *argument)
 			char tx_buffer[50];
 			uint8_t tx_len =0;
 			tx_len  = sprintf(tx_buffer,"total blinks: %d\n\r",total_blinks);
-			HAL_UART_Transmit(&huart3, (uint8_t*)tx_buffer,tx_len , 100);
+			//HAL_UART_Transmit(&huart3, (uint8_t*)tx_buffer,tx_len , 100);
 		}
 		osDelay(10);
 	}
