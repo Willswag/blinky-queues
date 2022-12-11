@@ -58,6 +58,9 @@ uint8_t new_message_flag = 0;
 uint8_t message_length;
 extern UART_HandleTypeDef huart3;
 char local_buffer[RX_BUFFER_LENGTH];
+extern TIM_HandleTypeDef htim3;
+
+
 /* USER CODE END Variables */
 /* Definitions for CommandLine */
 osThreadId_t CommandLineHandle;
@@ -139,7 +142,7 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the queue(s) */
   /* creation of CommandsToBlink */
-  CommandsToBlinkHandle = osMessageQueueNew (16, sizeof(uint16_t), &CommandsToBlink_attributes);
+  CommandsToBlinkHandle = osMessageQueueNew (16, sizeof(Command), &CommandsToBlink_attributes);
 
   /* creation of times_blinked */
   times_blinkedHandle = osMessageQueueNew (16, sizeof(uint16_t), &times_blinked_attributes);
@@ -248,9 +251,15 @@ void StartBlinker1(void *argument)
   /* USER CODE BEGIN StartBlinker1 */
 	uint16_t blink_rate = 1000;
 	uint16_t blinks = 0;
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+
 	/* Infinite loop */
 	for(;;)
 	{
+
+
+
+
 
 		osMessageQueueGet(CommandsToBlinkHandle,&blink_rate , NULL, 0);
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
