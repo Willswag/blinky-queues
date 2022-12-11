@@ -233,7 +233,7 @@ void StartCommandLine(void *argument)
 				memset(rx_buffer,0,RX_BUFFER_LENGTH);
 			}
 		}
-		osDelay(10);
+		osDelay(100);
 	}
 	osThreadDetach(CommandLineHandle);
   /* USER CODE END StartCommandLine */
@@ -249,7 +249,7 @@ void StartCommandLine(void *argument)
 void StartBlinker1(void *argument)
 {
   /* USER CODE BEGIN StartBlinker1 */
-	uint16_t blink_rate = 1000;
+	uint16_t blink_rate = 0;
 	uint16_t blinks = 0;
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
 
@@ -257,8 +257,12 @@ void StartBlinker1(void *argument)
 	for(;;)
 	{
 
-
-
+		if(blink_rate > 4800)
+		{
+			blink_rate = 0;
+		}
+		blink_rate = blink_rate + 10;
+		TIM3->CCR3 = blink_rate;
 
 
 		osMessageQueueGet(CommandsToBlinkHandle,&blink_rate , NULL, 0);
@@ -267,7 +271,7 @@ void StartBlinker1(void *argument)
 		if (blinks%100 == 0) {
 			osMessageQueuePut(times_blinkedHandle, &blinks , NULL, 0);
 		}
-		osDelay(blink_rate);
+		osDelay(10);
 	}
   /* USER CODE END StartBlinker1 */
 }
